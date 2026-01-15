@@ -13,33 +13,61 @@
 ## Структура проекта
 
 ├── include/
+
 │ ├── main.h
+
 │ ├── log_entry.h # Структура записи лога
+
 │ ├── json_parser.h # Интерфейс JSON парсера
+
 │ ├── analyzer.h # Интерфейс анализатора
+
 │ ├── formatter.h # Интерфейс форматтера
+
 │ └── windows_utils.h # Windows-специфичные утилиты
+
 ├── src/
+
 │ ├── main.cpp # Главная программа с меню
+
 │ ├── log_entry.cpp # Реализация LogEntry
+
 │ ├── json_parser.cpp # Реализация JSON парсера
+
 │ ├── analyzer.cpp # Реализация анализатора
+
 │ ├── formatter.cpp # Реализация форматтера
+
 │ └── windows_utils.cpp # Реализация Windows утилит
+
 ├── tests/
+
 │ ├── test_log_entry.cpp # Тесты LogEntry
+
 │ ├── test_analyzer.cpp # Тесты анализатора
+
 │ └── test_json.cpp # Тесты JSON парсера
+
 ├── data/
-│ ├── sample_logs.json # Пример логов (100 записей)
-│ ├── medium_logs.json # Средний набор (10 000 записей)
-│ └── large_logs.json # Большой набор (100 000 записей)
+
+│ ├── sample_logs.json # Пример логов (20 записей)
+
+│ ├── medium_logs.json # Средний набор (100 записей)
+
+│ └── large_logs.json # Большой набор (10000 записей)
+
 ├── docs/
+
 │ ├── Implementation_Plan.md # План реализации
+
 │ ├── bench.md # Отчёт производительности
+
 │ └── REPORT.md # Этот файл
+
 ├── CMakeLists.txt # Конфигурация CMake
+
 ├── .gitignore # Исключения Git
+
 └── README.md # Инструкции пользователя
 
 ---
@@ -409,5 +437,6 @@ docs/report_example.md — пример выходного отчёта прог
 docs/full_report.pdf — полный технический отчёт с выводами и предложениями
 tests/— исходный код всех тестов
 scripts/generate_logs.py — утилита для генерации тестовых данных
+
 
 
