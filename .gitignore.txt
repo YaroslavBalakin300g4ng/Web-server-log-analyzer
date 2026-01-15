@@ -1,0 +1,108 @@
+# Сгенерированные CMake файлы
+build/
+out/
+bin/
+lib/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+*.cmake.*
+
+# Файлы IDE
+.vscode/
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.opensdf
+*.sdf
+*.db
+ipch/
+
+# Скомпилированные файлы
+*.exe
+*.out
+*.app
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.pdb
+*.idb
+*.ilk
+*.exp
+
+# Локальные настройки
+*.local
+.env
+.env.local
+
+# Временные файлы
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.#*
+
+# Данные тестов (кроме примеров)
+data/test_*
+data/large.json
+data/generated_*
+
+# Бинарные данные
+*.bin
+*.dat
+
+# Логи
+*.log
+logs/
+
+# Пакеты
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Документация (сгенерированная)
+docs/_build/
+docs/*.pdf
+docs/*.html
+
+# Профилирование
+*.prof
+*.profdata
+callgrind.out.*
+
+# Системные файлы Windows
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Исключения (что НЕ игнорировать)
+!data/small.json
+!data/medium.json
+!data/invalid.json
+!data/example.json
+!docs/Implementation_Plan.md
+!docs/bench.md
+!docs/REPORT.md
+!README.md
+!LICENSE
+!scripts/generate_test_data.py
+
+# Специфичные для проекта
+coverage/
+profiling/
+doxygen/

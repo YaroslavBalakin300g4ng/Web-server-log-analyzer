@@ -1,0 +1,124 @@
+cmake_minimum_required(VERSION 3.15)
+project(log_analyzer VERSION 1.0.0 LANGUAGES CXX)
+
+# Настройка стандарта C++
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Настройки компилятора для Windows
+if(MSVC)
+    add_compile_options(/W4 /WX /permissive-)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    if(MINGW)
+        add_compile_options(-static)
+    endif()
+endif()
+
+# Опции проекта
+option(BUILD_TESTS "Build tests" ON)
+option(BUILD_BENCHMARKS "Build benchmarks" OFF)
+option(USE_SYSTEM_JSON "Use system JSON library" OFF)
+
+# Включаем папки с исходным кодом
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+# Основной исполняемый файл
+add_executable(log_analyzer
+    src/main.cpp
+    src/json_parser.cpp
+    src/log_analyzer.cpp
+    src/utils.cpp
+    src/cli_handler.cpp
+    src/validator.cpp
+)
+
+# Устанавливаем выходной каталог для Windows
+if(WIN32)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+endif()
+
+# Тесты
+if(BUILD_TESTS)
+    enable_testing()
+    
+    # Unit-тесты
+    add_executable(tests
+        tests/test_parser.cpp
+        tests/test_analyzer.cpp
+        tests/test_validator.cpp
+        tests/test_utils.cpp
+        src/json_parser.cpp
+        src/log_analyzer.cpp
+        src/utils.cpp
+        src/validator.cpp
+    )
+    
+    target_include_directories(tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+    
+    # Интеграционные тесты
+    add_executable(integration_tests
+        tests/integration_test.cpp
+        src/json_parser.cpp
+        src/log_analyzer.cpp
+        src/utils.cpp
+        src/validator.cpp
+        src/cli_handler.cpp
+    )
+    
+    target_include_directories(integration_tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+    
+    # Добавляем тесты в CTest
+    add_test(NAME unit_tests COMMAND tests)
+    add_test(NAME integration_tests COMMAND integration_tests)
+endif()
+
+# Бенчмарки
+if(BUILD_BENCHMARKS)
+    add_executable(benchmarks
+        tests/benchmark.cpp
+        src/json_parser.cpp
+        src/log_analyzer.cpp
+        src/utils.cpp
+        src/validator.cpp
+    )
+    
+    target_include_directories(benchmarks PRIVATE ${CMAKE_SOURCE_DIR}/include)
+endif()
+
+# Генератор тестовых данных
+add_executable(generate_data
+    scripts/generate_test_data.cpp
+    src/utils.cpp
+)
+
+# Установка (опционально)
+install(TARGETS log_analyzer
+    RUNTIME DESTINATION bin
+    BUNDLE DESTINATION .
+)
+
+install(DIRECTORY data/
+    DESTINATION share/log_analyzer/data
+)
+
+install(FILES README.md LICENSE
+    DESTINATION share/doc/log_analyzer
+)
+
+# Пост-строчный скрипт для Windows
+if(WIN32)
+    add_custom_command(TARGET log_analyzer POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_SOURCE_DIR}/data/small.json
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_SOURCE_DIR}/docs/usage_examples.txt
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+        COMMENT "Copying data files to output directory"
+    )
+endif()
